@@ -1,3 +1,4 @@
+prodTrafficRelease: green
 release: green 
 applications:
 - toLoad: class5,class0
