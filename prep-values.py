@@ -8,7 +8,7 @@ import time
 APP_COUNT=3
 CLASS_COUNT=12
 
-filepath = "values.yaml"
+filepath = "charts/values.yaml"
 
 with open(filepath, "r") as yaml_file:
     old_data = yaml.safe_load(yaml_file)
@@ -36,6 +36,8 @@ elif sys.argv[1] == "keep":
     data["applications"] = old_data["applications"]
 else:
     raise ValueError(sys.argv)
+
+data["release"] = sys.argv[2]
 
 with open(filepath, "w") as yaml_file:
     yaml.dump(data, yaml_file)
