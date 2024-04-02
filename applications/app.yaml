@@ -1,18 +1,37 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: my-app
+  name: kubeplay
 spec:
   project: default
   source:
     repoURL: https://github.com/simeonstoykovqc/kubeplay-argo
-    targetRevision: HEAD
+    targetRevision: blue-green 
     path: charts/app
     helm:
       valueFiles:
         - charts/app/values.yaml
   destination:
-    server: https://kubernetes.default.svc
+    server: https://192.168.49.2:8443
+    namespace: default
+  syncPolicy:
+    automated: {}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubeplay-prod-route
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/simeonstoykovqc/kubeplay-argo
+    targetRevision: blue-green 
+    path: charts/prod-route
+    helm:
+      valueFiles:
+        - charts/prod-route/values.yaml
+  destination:
+    server: https://192.168.49.2:8443
     namespace: default
   syncPolicy:
     automated: {}
