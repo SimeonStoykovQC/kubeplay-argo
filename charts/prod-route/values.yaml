@@ -1,2 +1,2 @@
-prodTrafficRelease: green  # either blue or green, depending on where production traffic should be routed to
+prodTrafficRelease: blue  # either blue or green, depending on where production traffic should be routed to
 
