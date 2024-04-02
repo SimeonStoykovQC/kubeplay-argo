@@ -1,0 +1,45 @@
+{{- range $index, $application := .Values.applications }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeplay-application-{{ $index }}-deployment-{{ $.Values.release }}
+  labels:
+    app: kubeplay-application-{{ $index }}-{{ $.Values.release }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubeplay-application-{{ $index }}-{{ $.Values.release }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      name: kubeplay-application-{{ $index }}-{{ $.Values.release }}
+      labels:
+        app: kubeplay-application-{{ $index }}-{{ $.Values.release }}
+      annotations:
+        kubernetes.io/change-cause: force-redeploy-{{ $.Values.redeployApplication }}
+    spec:
+      containers:
+      - name: kubeplay-application
+        image: ghcr.io/simeonstoykovqc/kubeplay-application:1.3
+        ports:
+        - containerPort: 80
+        startupProbe:
+          httpGet:
+            path: /selfcheck
+            port: 80
+          initialDelaySeconds: 1
+          periodSeconds: 3
+          failureThreshold: 1000
+        env:
+        - name: TO_LOAD
+          value: "{{ $application.toLoad }}"
+      imagePullSecrets:
+      - name: ghcr-secret
+{{- end }}
+

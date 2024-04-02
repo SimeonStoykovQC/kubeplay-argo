@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/simeonstoykovqc/kubeplay-argo
+    targetRevision: HEAD
+    path: charts/app
+    helm:
+      valueFiles:
+        - charts/app/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated: {}
+

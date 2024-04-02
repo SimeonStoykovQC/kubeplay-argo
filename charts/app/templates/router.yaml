@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeplay-router-deployment-{{ .Values.release }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubeplay-router-{{ .Values.release }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      name: kubeplay-router-{{ .Values.release }}
+      labels:
+        app: kubeplay-router-{{ .Values.release }}
+      annotations:
+        kubernetes.io/change-cause: force-redeploy-{{ .Values.redeployRouter }}
+    spec:
+      containers:
+      - name: kubeplay-router
+        image: ghcr.io/simeonstoykovqc/kubeplay-router:1.5
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        startupProbe:
+          httpGet:
+            path: /selfcheck  # Path to the endpoint that indicates startup
+            port: 80  # Port to access the startup probe
+          initialDelaySeconds: 1  # Wait some time after the container starts before checking
+          periodSeconds: 3  # How often to perform the check
+          failureThreshold: 1000
+        volumeMounts:
+          - name: configmap-volume
+            mountPath: /configmap-mount
+        env:
+        - name: ROUTER_CONFIG
+          value: "/configmap-mount/router-config.json"
+      volumes:
+        - name: configmap-volume
+          configMap:
+            name: router-configmap-{{ .Values.release }}
+      imagePullSecrets:
+      - name: ghcr-secret
+

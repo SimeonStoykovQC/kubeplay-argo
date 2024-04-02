@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: router-configmap-{{ .Values.release }}
+data:
+  router-config.json: |
+    {
+      {{- $mapLength := add -1 (len .Values.applications) }}
+      {{- range $index, $application := .Values.applications }}
+      {{- $classes := splitList "," .toLoad }}
+
+      {{- $classLength := add -1 (len $classes) }}
+      {{- range $cindex, $class := $classes }}
+      "{{ $class }}": "http://kubeplay-application-{{ $index }}-{{ $.Values.release }}:80"{{ if or (ne $mapLength $index) (ne $classLength $cindex) }},{{ end }}
+      {{- end }}
+      {{- end }}
+    }
+

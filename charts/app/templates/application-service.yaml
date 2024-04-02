@@ -1,0 +1,23 @@
+{{- range $index, $application := .Values.applications }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubeplay-application-{{ $index }}-{{ $.Values.release }}
+spec:
+  selector:
+    app: kubeplay-application-{{ $index }}-{{ $.Values.release }}
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      
+      # NodePort not technically needed, just for debugging purposes
+      {{- if (eq $.Values.release "blue") }}
+      nodePort: 3001{{ $index }}
+      {{- else }}
+      nodePort: 3002{{ $index }}
+      {{- end }}
+  type: NodePort
+{{- end }}
+
