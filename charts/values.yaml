@@ -1,4 +1,3 @@
-prodTrafficRelease: blue
 release: blue 
 applications:
 - toLoad: class5

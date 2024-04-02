@@ -10,20 +10,29 @@ spec:
     path: charts/app
     helm:
       valueFiles:
-        - charts/app/values.yaml
+        - ../values.yaml
   destination:
     server: https://192.168.49.2:8443
     namespace: default
   syncPolicy:
     automated: {}
-  hooks:
-    postSync:
-      - name: my-app-post-sync
-        hookType: Sync
-        script:
-          inline: |
-            #!/bin/bash
-            echo "Post-sync hook executed"
-            # Add your custom commands here
-            sed "s/{{ \.Values\.prodTrafficRelease }}/$new/g" router-service.whatisthis | kubectl apply -f -
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubeplay-prod-route
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/simeonstoykovqc/kubeplay-argo
+    targetRevision: blue-green 
+    path: charts/prod-route
+    helm:
+      valueFiles:
+        - ../values.yaml
+  destination:
+    server: https://192.168.49.2:8443
+    namespace: default
+  syncPolicy:
+    automated: {}
 
