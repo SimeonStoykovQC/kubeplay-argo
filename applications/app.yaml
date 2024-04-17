@@ -3,10 +3,15 @@ kind: Application
 metadata:
   name: kubeplay
 spec:
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+    - PruneLast=true
   project: default
   source:
     repoURL: https://github.com/simeonstoykovqc/kubeplay-argo
-    targetRevision: blue-green 
+    targetRevision: blue-green-v2 
     path: charts/app
     helm:
       valueFiles:
@@ -14,21 +19,21 @@ spec:
   destination:
     server: https://kubernetes.default.svc 
     namespace: default
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kubeplay-prod-route
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/simeonstoykovqc/kubeplay-argo
-    targetRevision: blue-green 
-    path: charts/prod-route
-    helm:
-      valueFiles:
-        - ../values.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: default
-
+#---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+  #name: kubeplay-prod-route
+#spec:
+  #project: default
+  #source:
+    #repoURL: https://github.com/simeonstoykovqc/kubeplay-argo
+    #targetRevision: blue-green 
+    #path: charts/prod-route
+    #helm:
+      #valueFiles:
+        #- ../values.yaml
+  #destination:
+    #server: https://kubernetes.default.svc
+    #namespace: default
+#

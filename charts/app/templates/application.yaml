@@ -4,6 +4,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kubeplay-application-{{ $index }}-deployment-{{ $.Values.release }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   labels:
     app: kubeplay-application-{{ $index }}-{{ $.Values.release }}
 spec:
