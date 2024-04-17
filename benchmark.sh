@@ -15,14 +15,8 @@ wait-for-argo() {
 }
 
 update-argo-bg () {
-    argocd app sync kubeplay-2 || echo "probs failed because of need to prune"
-    wait-for-argo kubeplay-2
-    
-    argocd app sync kubeplay-prod-route
-    wait-for-argo kubeplay-prod-route
-
-    argocd app sync kubeplay-2 --prune
-    wait-for-argo kubeplay-2
+    argocd app sync kubeplay --prune
+    wait-for-argo kubeplay
 }
 
 export CONDA_PREFIX=/home/ec2-user/miniforge3/envs/prep
