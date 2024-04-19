@@ -13,7 +13,7 @@ data:
 
       {{- $classLength := add -1 (len $classes) }}
       {{- range $cindex, $class := $classes }}
-      "{{ $class }}": "http://kubeplay-application-{{ $class }}:80"{{ if or (ne $mapLength $index) (ne $classLength $cindex) }},{{ end }}
+      "{{ $class }}": "http://kubeplay-application-{{ $class }}-{{ $.Values.release }}:80"{{ if or (ne $mapLength $index) (ne $classLength $cindex) }},{{ end }}
       {{- end }}
       {{- end }}
     }
