@@ -15,8 +15,8 @@ wait-for-argo() {
 }
 
 update-argo-bg () {
-    argocd app sync kubeplay --prune
-    wait-for-argo kubeplay
+    argocd app sync kubeplay-services --prune
+    wait-for-argo kubeplay-services
 }
 
 export CONDA_PREFIX=/home/ec2-user/miniforge3/envs/prep
