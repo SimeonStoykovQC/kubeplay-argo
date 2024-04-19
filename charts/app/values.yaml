@@ -1,7 +1,7 @@
 applications:
-- toLoad: class0,class3,class5,class6,class11
-- toLoad: class2,class4,class7,class8,class10
-- toLoad: class1,class9
-redeployApplication: 2970758
-redeployRouter: 2970758
-release: green
+- toLoad: class1,class11
+- toLoad: class0,class5,class6,class7,class8,class9,class10
+- toLoad: class2,class3,class4
+redeployApplication: 1628714
+redeployRouter: 1628714
+release: blue
