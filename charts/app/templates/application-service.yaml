@@ -1,25 +1,24 @@
 {{- range $index, $application := .Values.applications }}
+
+{{- $classes := splitList "," .toLoad }}
+{{- $classLength := add -1 (len $classes) }}
+{{- range $cindex, $class := $classes }}
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: kubeplay-application-{{ $index }}-{{ $.Values.release }}
+  name: kubeplay-application-{{ $class }}-{{ $.Values.release }}
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
   selector:
-    app: kubeplay-application-{{ $index }}-{{ $.Values.release }}
+    {{ $class }}: "can-serve"
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-      
-      # NodePort not technically needed, just for debugging purposes
-      {{- if (eq $.Values.release "blue") }}
-      nodePort: 3001{{ $index }}
-      {{- else }}
-      nodePort: 3002{{ $index }}
-      {{- end }}
-  type: NodePort
+  type: ClusterIP
+{{- end }}
 {{- end }}
 

@@ -6,8 +6,6 @@ metadata:
   name: kubeplay-application-{{ $index }}-deployment-{{ $.Values.release }}
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-  labels:
-    app: kubeplay-application-{{ $index }}-{{ $.Values.release }}
 spec:
   replicas: 1
   selector:
@@ -23,6 +21,12 @@ spec:
       name: kubeplay-application-{{ $index }}-{{ $.Values.release }}
       labels:
         app: kubeplay-application-{{ $index }}-{{ $.Values.release }}
+
+        {{- $classes := splitList "," .toLoad }}
+        {{- $classLength := add -1 (len $classes) }}
+        {{- range $cindex, $class := $classes }}
+        {{ $class }}: "can-serve"
+        {{- end }}
       annotations:
         kubernetes.io/change-cause: force-redeploy-{{ $.Values.redeployApplication }}
     spec:
