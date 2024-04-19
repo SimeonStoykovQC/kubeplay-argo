@@ -22,7 +22,7 @@ update-argo-bg () {
 export CONDA_PREFIX=/home/ec2-user/miniforge3/envs/prep
 python ./prep-values.py $1 $2
 
-git add charts/values.yaml
+git add charts/app/values.yaml
 git commit -m "automated benchmark update with args: $1 - $2"
 git push
 sleep 1

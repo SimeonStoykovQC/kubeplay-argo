@@ -8,7 +8,7 @@ import time
 APP_COUNT=3
 CLASS_COUNT=12
 
-filepath = "charts/values.yaml"
+filepath = "charts/app/values.yaml"
 
 with open(filepath, "r") as yaml_file:
     old_data = yaml.safe_load(yaml_file)
