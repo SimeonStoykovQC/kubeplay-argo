@@ -34,10 +34,12 @@ TEMP_TARGET_FILE="target.tmp"  # Temporary target file for Vegeta
 
 # Create a temporary target file
 echo "" > $TEMP_TARGET_FILE
+minikube_ip=$(minikube ip)
 for ((i = 0; i < 12; i++)); do
-    echo "GET http://192.168.49.2:30001/get/class${i}" >> "$TEMP_TARGET_FILE"
+    echo "GET http://${minikube_ip}:30001/get/class${i}" >> "$TEMP_TARGET_FILE"
 done
 
+pkill -f vegeta || echo "No vegeta processes"
 # Start the attack in the background
 vegeta attack -targets=$TEMP_TARGET_FILE -rate=$RATE -output=$OUTPUT_FILE > /dev/null &
 sleep 1
