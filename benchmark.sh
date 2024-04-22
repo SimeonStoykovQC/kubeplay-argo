@@ -28,7 +28,7 @@ git push
 sleep 1
 
 # Define variables
-RATE="20"  # Requests per second
+RATE="30"  # Requests per second
 OUTPUT_FILE="results.bin"  # Output file for Vegeta results
 TEMP_TARGET_FILE="target.tmp"  # Temporary target file for Vegeta
 
