@@ -5,3 +5,4 @@ applications:
 redeployApplication: 8257211
 redeployRouter: 8257211
 release: green
+fullnameOverride: mysuffix
