@@ -27,6 +27,7 @@ spec:
         {{- range $cindex, $class := $classes }}
         {{ $class }}: "can-serve"
         {{- end }}
+        deployVersion: {{ $.Values.release }}
       annotations:
         kubernetes.io/change-cause: force-redeploy-{{ $.Values.redeployApplication }}
     spec:
